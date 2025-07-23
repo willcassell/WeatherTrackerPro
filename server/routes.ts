@@ -50,6 +50,27 @@ function determinePressureTrend(currentPressure: number, historicalData: any[]):
   return "Steady";
 }
 
+// Helper function to fetch station info from WeatherFlow API
+async function fetchStationInfo(): Promise<string> {
+  const token = getApiToken();
+  if (!token) return "Corner Rock Wx";
+
+  try {
+    const response = await fetch(`${WEATHERFLOW_API_BASE}/stations/${STATION_ID}?token=${token}`);
+    
+    if (!response.ok) {
+      console.warn(`WeatherFlow station API error: ${response.status}, using fallback name`);
+      return "Corner Rock Wx";
+    }
+    
+    const stationData: WeatherFlowStation = await response.json();
+    return stationData.name || "Corner Rock Wx";
+  } catch (error) {
+    console.warn("Error fetching station info, using fallback name:", error);
+    return "Corner Rock Wx";
+  }
+}
+
 async function fetchWeatherFlowData(): Promise<any> {
   const token = getApiToken();
   if (!token) {
@@ -75,9 +96,13 @@ async function fetchWeatherFlowData(): Promise<any> {
     const todayForecast = forecastData.forecast?.daily[0];
     const yesterdayForecast = forecastData.forecast?.daily[1];
 
+    // Get station name
+    const stationName = await fetchStationInfo();
+
     // Convert WeatherFlow data to our format (with proper unit conversions)
     const weatherData = {
       stationId: STATION_ID,
+      stationName: stationName,
       temperature: celsiusToFahrenheit(currentConditions.air_temperature),
       feelsLike: celsiusToFahrenheit(currentConditions.feels_like),
       temperatureHigh: celsiusToFahrenheit(todayForecast?.air_temp_high || currentConditions.air_temperature),

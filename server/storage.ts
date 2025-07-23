@@ -45,6 +45,7 @@ export class MemStorage implements IStorage {
       dewPoint: insertData.dewPoint ?? null,
       rainToday: insertData.rainToday ?? null,
       rainYesterday: insertData.rainYesterday ?? null,
+      stationName: insertData.stationName ?? null,
     };
     
     this.weatherData.set(insertData.stationId, weatherDataRecord);

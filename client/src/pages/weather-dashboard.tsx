@@ -61,6 +61,7 @@ export default function WeatherDashboard() {
       {/* Top Banner */}
       <TopBanner 
         stationId="38335" 
+        stationName={weatherData?.stationName}
         lastUpdated={weatherData?.lastUpdated}
         isLoading={isLoading}
       />

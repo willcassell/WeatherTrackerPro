@@ -5,6 +5,7 @@ import { z } from "zod";
 export const weatherData = pgTable("weather_data", {
   id: serial("id").primaryKey(),
   stationId: text("station_id").notNull(),
+  stationName: text("station_name"), // Weather station display name
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   temperature: real("temperature"), // Current temperature in Fahrenheit
   feelsLike: real("feels_like"), // Feels-like temperature in Fahrenheit

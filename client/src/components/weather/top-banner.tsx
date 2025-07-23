@@ -3,11 +3,12 @@ import { format } from "date-fns";
 
 interface TopBannerProps {
   stationId: string;
+  stationName?: string;
   lastUpdated?: Date;
   isLoading?: boolean;
 }
 
-export default function TopBanner({ stationId, lastUpdated, isLoading }: TopBannerProps) {
+export default function TopBanner({ stationId, stationName, lastUpdated, isLoading }: TopBannerProps) {
   const formatLastUpdated = (date?: Date) => {
     if (!date) return "Never";
     return format(date, "MMM d, yyyy h:mm a");
@@ -19,7 +20,7 @@ export default function TopBanner({ stationId, lastUpdated, isLoading }: TopBann
         <div className="flex items-center space-x-2">
           <Radio className="text-primary h-4 w-4" />
           <h1 className="text-sm font-semibold">
-            WeatherFlow Tempest Station {stationId}
+            {stationName || "Corner Rock Wx"} - Station {stationId}
           </h1>
         </div>
         <div className="flex items-center space-x-2 text-muted-foreground text-xs">
