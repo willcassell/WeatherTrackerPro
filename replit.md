@@ -128,5 +128,11 @@ Preferred communication style: Simple, everyday language.
 - **Indoor Temperature Card**: Added thermostat card displaying data from 2 Ecobee thermostats (Living Room & Bedroom)
 - **Temperature Comparison**: Shows current vs target temperature with visual indicators
 - **HVAC Mode Display**: Color-coded heating/cooling modes with emoji indicators
-- **API Framework**: Built extensible API structure ready for real Ecobee authentication
-- **Mock Data Implementation**: Currently using sample data while API keys are configured
+- **OAuth 2.0 Authentication**: Complete PIN-based authentication system for Ecobee API integration
+- **Authentication Interface**: Built /thermostat-auth page for easy thermostat setup and management
+- **API Framework**: Extensible structure supporting token refresh and error handling
+
+### Documentation Updates
+- **Comprehensive README**: Created detailed README.md with setup instructions, API documentation, and troubleshooting guide
+- **Feature Documentation**: Complete coverage of weather monitoring, thermostat integration, and kiosk optimization
+- **Developer Guide**: Architecture overview, deployment instructions, and contribution guidelines
