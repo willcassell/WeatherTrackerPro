@@ -22,6 +22,21 @@ function degreesToCardinal(degrees: number): string {
   return directions[index];
 }
 
+// Helper function to convert Celsius to Fahrenheit
+function celsiusToFahrenheit(celsius: number): number {
+  return (celsius * 9/5) + 32;
+}
+
+// Helper function to convert millibars to inches of mercury
+function millibarsToInchesHg(millibars: number): number {
+  return millibars * 0.02953;
+}
+
+// Helper function to convert millimeters to inches
+function millimetersToInches(millimeters: number): number {
+  return millimeters * 0.0393701;
+}
+
 // Helper function to determine pressure trend
 function determinePressureTrend(currentPressure: number, historicalData: any[]): string {
   if (historicalData.length < 2) return "Steady";
@@ -60,17 +75,17 @@ async function fetchWeatherFlowData(): Promise<any> {
     const todayForecast = forecastData.forecast?.daily[0];
     const yesterdayForecast = forecastData.forecast?.daily[1];
 
-    // Convert WeatherFlow data to our format
+    // Convert WeatherFlow data to our format (with proper unit conversions)
     const weatherData = {
       stationId: STATION_ID,
-      temperature: currentConditions.air_temperature,
-      temperatureHigh: todayForecast?.air_temp_high || currentConditions.air_temperature,
-      temperatureLow: todayForecast?.air_temp_low || currentConditions.air_temperature,
-      windSpeed: currentConditions.wind_avg,
+      temperature: celsiusToFahrenheit(currentConditions.air_temperature),
+      temperatureHigh: celsiusToFahrenheit(todayForecast?.air_temp_high || currentConditions.air_temperature),
+      temperatureLow: celsiusToFahrenheit(todayForecast?.air_temp_low || currentConditions.air_temperature),
+      windSpeed: currentConditions.wind_avg * 2.237, // Convert m/s to mph
       windDirection: currentConditions.wind_direction,
       windDirectionCardinal: degreesToCardinal(currentConditions.wind_direction),
-      pressure: currentConditions.sea_level_pressure,
-      pressureTrend: currentConditions.pressure_trend || determinePressureTrend(currentConditions.sea_level_pressure, historicalData),
+      pressure: millibarsToInchesHg(currentConditions.sea_level_pressure),
+      pressureTrend: currentConditions.pressure_trend || determinePressureTrend(millibarsToInchesHg(currentConditions.sea_level_pressure), historicalData),
       humidity: currentConditions.relative_humidity,
       uvIndex: currentConditions.uv,
       visibility: 10.0, // WeatherFlow doesn't provide visibility, using default

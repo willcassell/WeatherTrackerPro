@@ -111,3 +111,15 @@ Preferred communication style: Simple, everyday language.
 - **Error Overlay**: Runtime error display in development
 - **Replit Integration**: Banner and cartographer for Replit environment
 - **Live Reloading**: Automatic server restart on changes
+
+## Recent Changes (July 23, 2025)
+
+### Critical Unit Conversion Fixes
+- **Temperature Conversion**: Fixed WeatherFlow API returning Celsius values while displaying Fahrenheit labels - added automatic C to F conversion
+- **Pressure Conversion**: Fixed pressure readings showing millibars instead of inches of mercury - added mb to inHg conversion  
+- **Wind Speed Conversion**: Added meters per second to miles per hour conversion for accurate wind readings
+
+### Kiosk Layout Optimizations
+- **Compact Weather Cards**: Reduced padding and spacing for better space utilization on kiosk displays
+- **Visual Enhancements**: Added compass rose for wind direction and pressure gauge with high/medium/low indicators
+- **Layout Improvements**: Implemented 50/50 split with weather cards on left, live radar on right half
