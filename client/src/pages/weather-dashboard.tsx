@@ -117,7 +117,13 @@ export default function WeatherDashboard() {
                 dewPoint={weatherData.dewPoint}
               />
               <ThermostatCard 
-                thermostats={thermostatData}
+                thermostats={thermostatData?.map(t => ({
+                  ...t,
+                  temperature: t.temperature ?? 0,
+                  targetTemp: t.targetTemp ?? 0,
+                  humidity: t.humidity ?? undefined,
+                  mode: (t.mode as 'heat' | 'cool' | 'auto' | 'off') ?? 'off'
+                }))}
                 isLoading={thermostatLoading}
                 error={thermostatError instanceof Error ? thermostatError.message : undefined}
               />

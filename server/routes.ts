@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertWeatherDataSchema, insertThermostatDataSchema, type WeatherFlowStation, type WeatherFlowObservation, type WeatherFlowForecast, type ThermostatData } from "@shared/schema";
+import { EcobeeAPI, convertEcobeeToThermostatData } from "./ecobee-api";
 import { z } from "zod";
 
 const WEATHERFLOW_API_BASE = "https://swd.weatherflow.com/swd/rest";
@@ -13,6 +14,11 @@ const getApiToken = () => {
          process.env.TEMPEST_API_TOKEN || 
          process.env.API_TOKEN ||
          process.env.WEATHERFLOW_ACCESS_TOKEN;
+};
+
+// Get Ecobee API key
+const getEcobeeApiKey = () => {
+  return process.env.ECOBEE_API_KEY;
 };
 
 // Helper function to convert wind direction degrees to cardinal direction
@@ -189,37 +195,178 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Thermostat API endpoints
   app.get("/api/thermostats/current", async (req, res) => {
     try {
-      // Return mock data for now - will be replaced with real integration
-      const mockThermostats: ThermostatData[] = [
-        {
-          id: 1,
-          thermostatId: "ecobee-living-room",
-          name: "Living Room",
-          temperature: 72.5,
-          targetTemp: 72.0,
-          humidity: 45,
-          mode: "cool",
-          timestamp: new Date(),
-          lastUpdated: new Date(),
-        },
-        {
-          id: 2,
-          thermostatId: "ecobee-bedroom",
-          name: "Bedroom",
-          temperature: 70.8,
-          targetTemp: 69.0,
-          humidity: 42,
-          mode: "cool",
-          timestamp: new Date(),
-          lastUpdated: new Date(),
-        }
-      ];
+      const apiKey = getEcobeeApiKey();
+      
+      if (!apiKey) {
+        console.warn("No Ecobee API key found, returning mock data");
+        // Return mock data if no API key
+        const mockThermostats: ThermostatData[] = [
+          {
+            id: 1,
+            thermostatId: "ecobee-living-room",
+            name: "Living Room (Mock)",
+            temperature: 72.5,
+            targetTemp: 72.0,
+            humidity: 45,
+            mode: "cool",
+            timestamp: new Date(),
+            lastUpdated: new Date(),
+          },
+          {
+            id: 2,
+            thermostatId: "ecobee-bedroom",
+            name: "Bedroom (Mock)",
+            temperature: 70.8,
+            targetTemp: 69.0,
+            humidity: 42,
+            mode: "cool",
+            timestamp: new Date(),
+            lastUpdated: new Date(),
+          }
+        ];
+        return res.json(mockThermostats);
+      }
 
-      res.json(mockThermostats);
+      const ecobeeApi = new EcobeeAPI(apiKey);
+      
+      try {
+        const thermostatList = await ecobeeApi.getThermostats();
+        const convertedData = thermostatList.map((thermostat, index) => 
+          convertEcobeeToThermostatData(thermostat, index)
+        );
+        
+        if (convertedData.length === 0) {
+          console.warn("No thermostats found in Ecobee account");
+          return res.json([]);
+        }
+
+        res.json(convertedData);
+      } catch (authError) {
+        console.error("Ecobee authentication error:", authError);
+        
+        // Check if it's an auth error and provide helpful response
+        if (authError instanceof Error && 
+            (authError.message.includes("Authentication") || 
+             authError.message.includes("Token") ||
+             authError.message.includes("401"))) {
+          return res.status(401).json({
+            error: "Authentication required",
+            message: "Please authenticate with Ecobee first. Use /api/thermostats/auth to start the process.",
+            needsAuth: true
+          });
+        }
+        
+        throw authError;
+      }
     } catch (error) {
       console.error("Error getting thermostat data:", error);
       res.status(500).json({ 
         error: "Failed to fetch thermostat data",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  // Ecobee authentication endpoints
+  app.post("/api/thermostats/auth/start", async (req, res) => {
+    try {
+      const apiKey = getEcobeeApiKey();
+      
+      if (!apiKey) {
+        return res.status(400).json({ 
+          error: "No Ecobee API key configured",
+          message: "Please add ECOBEE_API_KEY to environment variables"
+        });
+      }
+
+      const ecobeeApi = new EcobeeAPI(apiKey);
+      const authData = await ecobeeApi.initiateAuth();
+      
+      res.json({
+        message: "Please go to ecobee.com, log in, and enter this PIN in My Apps section",
+        pin: authData.pin,
+        authorizationCode: authData.authorizationCode,
+        expiresIn: authData.expiresIn,
+        instructions: [
+          "1. Go to ecobee.com and log in",
+          "2. Click 'My Apps' in the menu",
+          "3. Click 'Add Application'", 
+          "4. Enter PIN: " + authData.pin,
+          "5. Click 'Authorize'",
+          "6. Then call POST /api/thermostats/auth/complete with the authorizationCode"
+        ]
+      });
+    } catch (error) {
+      console.error("Error starting Ecobee auth:", error);
+      res.status(500).json({ 
+        error: "Failed to start authentication",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  app.post("/api/thermostats/auth/complete", async (req, res) => {
+    try {
+      const { authorizationCode } = req.body;
+      
+      if (!authorizationCode) {
+        return res.status(400).json({ 
+          error: "Authorization code required",
+          message: "Please provide the authorizationCode from the auth/start response"
+        });
+      }
+
+      const apiKey = getEcobeeApiKey();
+      if (!apiKey) {
+        return res.status(400).json({ 
+          error: "No Ecobee API key configured"
+        });
+      }
+
+      const ecobeeApi = new EcobeeAPI(apiKey);
+      const tokens = await ecobeeApi.completeAuth(authorizationCode);
+      
+      res.json({
+        message: "Authentication successful! You can now fetch thermostat data.",
+        expiresIn: tokens.expires_in,
+        tokenType: tokens.token_type
+      });
+    } catch (error) {
+      console.error("Error completing Ecobee auth:", error);
+      res.status(500).json({ 
+        error: "Failed to complete authentication",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  app.get("/api/thermostats/auth/status", async (req, res) => {
+    try {
+      const apiKey = getEcobeeApiKey();
+      
+      if (!apiKey) {
+        return res.json({ 
+          hasApiKey: false,
+          message: "No Ecobee API key configured"
+        });
+      }
+
+      const ecobeeApi = new EcobeeAPI(apiKey);
+      const status = ecobeeApi.getTokenStatus();
+      
+      res.json({
+        hasApiKey: true,
+        ...status,
+        message: status.hasTokens 
+          ? status.isExpired 
+            ? "Authentication expired. Tokens need refresh."
+            : "Authentication active"
+          : "No authentication tokens. Please authenticate first."
+      });
+    } catch (error) {
+      console.error("Error checking auth status:", error);
+      res.status(500).json({ 
+        error: "Failed to check authentication status",
         message: error instanceof Error ? error.message : "Unknown error"
       });
     }
