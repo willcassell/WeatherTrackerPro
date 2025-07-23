@@ -65,14 +65,14 @@ export default function PressureCard({ pressure, trend }: PressureCardProps) {
               style={{ left: `${pressurePosition}%` }}
             />
             
-            {/* Zone labels */}
-            <div className="absolute -bottom-4 left-0 text-xs text-red-400 font-medium">LOW</div>
-            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-xs text-yellow-400 font-medium">NORMAL</div>
-            <div className="absolute -bottom-4 right-0 text-xs text-green-400 font-medium">HIGH</div>
+            {/* Zone labels - positioned higher to avoid overlap */}
+            <div className="absolute -bottom-7 left-0 text-xs text-red-400 font-medium">LOW</div>
+            <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs text-yellow-400 font-medium">NORMAL</div>
+            <div className="absolute -bottom-7 right-0 text-xs text-green-400 font-medium">HIGH</div>
           </div>
           
-          {/* Pressure scale */}
-          <div className="flex justify-between mt-1 text-xs text-muted-foreground">
+          {/* Pressure scale - positioned below zone labels */}
+          <div className="flex justify-between mt-3 text-xs text-muted-foreground">
             <span>29.5</span>
             <span>30.0</span>
             <span>30.5</span>
