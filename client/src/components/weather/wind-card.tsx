@@ -1,0 +1,67 @@
+import { Wind } from "lucide-react";
+
+interface WindCardProps {
+  windSpeed?: number;
+  windDirection?: number;
+  windDirectionCardinal?: string;
+}
+
+export default function WindCard({ 
+  windSpeed, 
+  windDirection, 
+  windDirectionCardinal 
+}: WindCardProps) {
+  const formatWindSpeed = (speed?: number) => {
+    return speed !== undefined ? speed.toFixed(1) : "--";
+  };
+
+  const formatDirection = (direction?: number) => {
+    return direction !== undefined ? `${Math.round(direction)}°` : "--°";
+  };
+
+  return (
+    <div className="weather-card">
+      <div className="weather-card-header">
+        <h3 className="weather-card-title">Wind</h3>
+        <Wind className="weather-card-icon h-5 w-5" />
+      </div>
+      <div className="flex items-center space-x-6">
+        {/* Compact Compass Rose */}
+        <div className="relative w-16 h-16 flex-shrink-0">
+          <div className="absolute inset-0 border-2 border-border rounded-full"></div>
+          {/* Cardinal directions */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1 text-xs font-medium text-muted-foreground">
+            N
+          </div>
+          <div className="absolute right-0 top-1/2 transform translate-x-1 -translate-y-1/2 text-xs font-medium text-muted-foreground">
+            E
+          </div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1 text-xs font-medium text-muted-foreground">
+            S
+          </div>
+          <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 text-xs font-medium text-muted-foreground">
+            W
+          </div>
+          {/* Wind direction indicator */}
+          <div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            style={{ 
+              transform: `translate(-50%, -50%) rotate(${windDirection || 0}deg)` 
+            }}
+          >
+            <div className="w-1 h-6 bg-primary transform -translate-y-3 rounded-full"></div>
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-b-4 border-transparent border-b-primary"></div>
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="text-2xl font-bold text-foreground">
+            {formatWindSpeed(windSpeed)} mph
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {windDirectionCardinal || "N"} ({formatDirection(windDirection)})
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
