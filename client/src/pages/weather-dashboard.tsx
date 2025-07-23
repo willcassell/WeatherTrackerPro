@@ -68,13 +68,13 @@ export default function WeatherDashboard() {
       {/* Main Content - 50/50 Split */}
       <main className="flex h-full">
         {/* Left Half - Weather Data Cards */}
-        <section className="w-1/2 bg-background p-3 space-y-3 overflow-y-auto weather-scroll">
+        <section className="w-1/2 bg-background p-2 space-y-2 overflow-y-auto weather-scroll">
           {isLoading ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="weather-card animate-pulse">
-                  <div className="h-4 bg-muted rounded mb-2"></div>
-                  <div className="h-8 bg-muted rounded"></div>
+                  <div className="h-3 bg-muted rounded mb-1"></div>
+                  <div className="h-6 bg-muted rounded"></div>
                 </div>
               ))}
             </div>

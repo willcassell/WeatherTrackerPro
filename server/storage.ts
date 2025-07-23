@@ -27,7 +27,21 @@ export class MemStorage implements IStorage {
       ...insertData, 
       id,
       timestamp: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
+      // Ensure all optional fields have proper null values instead of undefined
+      temperature: insertData.temperature ?? null,
+      temperatureHigh: insertData.temperatureHigh ?? null,
+      temperatureLow: insertData.temperatureLow ?? null,
+      windSpeed: insertData.windSpeed ?? null,
+      windDirection: insertData.windDirection ?? null,
+      windDirectionCardinal: insertData.windDirectionCardinal ?? null,
+      pressure: insertData.pressure ?? null,
+      pressureTrend: insertData.pressureTrend ?? null,
+      humidity: insertData.humidity ?? null,
+      uvIndex: insertData.uvIndex ?? null,
+      visibility: insertData.visibility ?? null,
+      rainToday: insertData.rainToday ?? null,
+      rainYesterday: insertData.rainYesterday ?? null,
     };
     
     this.weatherData.set(insertData.stationId, weatherDataRecord);

@@ -11,12 +11,12 @@ export default function RainfallCard({ todayRain, yesterdayRain }: RainfallCardP
   };
 
   return (
-    <div className="weather-card">
+    <div className="weather-card minimal-padding">
       <div className="weather-card-header">
         <h3 className="weather-card-title">Rainfall</h3>
-        <CloudRain className="weather-card-icon h-5 w-5" />
+        <CloudRain className="weather-card-icon h-4 w-4" />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <div>
           <div className="text-lg font-bold text-foreground">
             {formatRain(todayRain)} in

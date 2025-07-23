@@ -68,11 +68,11 @@
 
 @layer components {
   .weather-card {
-    @apply bg-card rounded-lg border border-border p-3;
+    @apply bg-card rounded-lg border border-border p-2;
   }
   
   .weather-card-header {
-    @apply flex items-center justify-between mb-2;
+    @apply flex items-center justify-between mb-1;
   }
   
   .weather-card-title {

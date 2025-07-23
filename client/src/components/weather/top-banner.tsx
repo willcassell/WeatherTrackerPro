@@ -10,25 +10,25 @@ interface TopBannerProps {
 export default function TopBanner({ stationId, lastUpdated, isLoading }: TopBannerProps) {
   const formatLastUpdated = (date?: Date) => {
     if (!date) return "Never";
-    return format(date, "MMM d, yyyy h:mm a zzz");
+    return format(date, "MMM d, yyyy h:mm a");
   };
 
   return (
-    <header className="bg-card border-b border-border py-2 px-4">
+    <header className="bg-card border-b border-border py-1.5 px-4">
       <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-          <Radio className="text-primary text-lg" />
-          <h1 className="text-lg font-semibold">
+        <div className="flex items-center space-x-2">
+          <Radio className="text-primary h-4 w-4" />
+          <h1 className="text-sm font-semibold">
             WeatherFlow Tempest Station {stationId}
           </h1>
         </div>
-        <div className="flex items-center space-x-2 text-muted-foreground text-sm">
-          <Clock className="h-4 w-4" />
+        <div className="flex items-center space-x-2 text-muted-foreground text-xs">
+          <Clock className="h-3 w-3" />
           <span>
             Last updated: {formatLastUpdated(lastUpdated)}
           </span>
           <div 
-            className={`w-2 h-2 rounded-full ${
+            className={`w-1.5 h-1.5 rounded-full ${
               isLoading 
                 ? 'bg-warning animate-pulse' 
                 : 'animate-pulse-green'

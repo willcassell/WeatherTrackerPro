@@ -16,26 +16,26 @@ export default function AdditionalDataCard({
   };
 
   return (
-    <div className="weather-card">
+    <div className="weather-card minimal-padding">
       <div className="weather-card-header">
         <h3 className="weather-card-title">Additional Data</h3>
-        <BarChart3 className="weather-card-icon h-5 w-5" />
+        <BarChart3 className="weather-card-icon h-4 w-4" />
       </div>
-      <div className="grid grid-cols-3 gap-4 text-center">
+      <div className="grid grid-cols-3 gap-2 text-center">
         <div>
-          <div className="text-lg font-bold text-foreground">
+          <div className="text-sm font-bold text-foreground">
             {formatValue(humidity)}%
           </div>
           <div className="text-xs text-muted-foreground">Humidity</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-foreground">
+          <div className="text-sm font-bold text-foreground">
             {formatValue(uvIndex)}
           </div>
           <div className="text-xs text-muted-foreground">UV Index</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-foreground">
+          <div className="text-sm font-bold text-foreground">
             {formatValue(visibility)} mi
           </div>
           <div className="text-xs text-muted-foreground">Visibility</div>

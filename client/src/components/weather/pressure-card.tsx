@@ -40,29 +40,29 @@ export default function PressureCard({ pressure, trend }: PressureCardProps) {
     : 50;
 
   return (
-    <div className="weather-card">
+    <div className="weather-card minimal-padding">
       <div className="weather-card-header">
         <h3 className="weather-card-title">Barometric Pressure</h3>
-        <Gauge className="weather-card-icon h-5 w-5" />
+        <Gauge className="weather-card-icon h-4 w-4" />
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3">
         {/* Pressure Gauge */}
-        <div className="relative w-16 h-8 flex-shrink-0">
+        <div className="relative w-12 h-6 flex-shrink-0">
           <div className="absolute inset-0 bg-muted rounded-full"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full opacity-60"></div>
           {/* Pressure indicator */}
           <div 
-            className="absolute top-1/2 transform -translate-y-1/2 w-1 h-6 bg-white rounded-full shadow-lg"
+            className="absolute top-1/2 transform -translate-y-1/2 w-0.5 h-5 bg-white rounded-full shadow-lg"
             style={{ left: `${pressurePosition}%` }}
           />
-          <div className="absolute -bottom-4 left-0 text-xs text-muted-foreground">29.5</div>
-          <div className="absolute -bottom-4 right-0 text-xs text-muted-foreground">30.5</div>
+          <div className="absolute -bottom-3 left-0 text-xs text-muted-foreground">29.5</div>
+          <div className="absolute -bottom-3 right-0 text-xs text-muted-foreground">30.5</div>
         </div>
         <div className="flex-1">
-          <div className="text-xl font-bold text-foreground">
+          <div className="text-lg font-bold text-foreground">
             {formatPressure(pressure)} in
           </div>
-          <div className={`flex items-center space-x-1 text-sm ${getTrendColor(trend)}`}>
+          <div className={`flex items-center space-x-1 text-xs ${getTrendColor(trend)}`}>
             {getTrendIcon(trend)}
             <span>{trend || 'Steady'}</span>
           </div>

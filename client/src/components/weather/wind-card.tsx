@@ -20,14 +20,14 @@ export default function WindCard({
   };
 
   return (
-    <div className="weather-card">
+    <div className="weather-card minimal-padding">
       <div className="weather-card-header">
         <h3 className="weather-card-title">Wind</h3>
-        <Wind className="weather-card-icon h-5 w-5" />
+        <Wind className="weather-card-icon h-4 w-4" />
       </div>
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-4">
         {/* Compact Compass Rose */}
-        <div className="relative w-16 h-16 flex-shrink-0">
+        <div className="relative w-12 h-12 flex-shrink-0">
           <div className="absolute inset-0 border-2 border-border rounded-full"></div>
           {/* Cardinal directions */}
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1 text-xs font-medium text-muted-foreground">
@@ -49,15 +49,15 @@ export default function WindCard({
               transform: `translate(-50%, -50%) rotate(${windDirection || 0}deg)` 
             }}
           >
-            <div className="w-1 h-6 bg-primary transform -translate-y-3 rounded-full"></div>
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-b-4 border-transparent border-b-primary"></div>
+            <div className="w-0.5 h-5 bg-primary transform -translate-y-2.5 rounded-full"></div>
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[3px] border-r-[3px] border-b-[6px] border-transparent border-b-primary"></div>
           </div>
         </div>
         <div className="flex-1">
-          <div className="text-2xl font-bold text-foreground">
+          <div className="text-xl font-bold text-foreground">
             {formatWindSpeed(windSpeed)} mph
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {windDirectionCardinal || "N"} ({formatDirection(windDirection)})
           </div>
         </div>
