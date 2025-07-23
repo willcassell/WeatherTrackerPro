@@ -87,6 +87,7 @@ export default function WeatherDashboard() {
               />
               <WindCard 
                 windSpeed={weatherData.windSpeed}
+                windGust={weatherData.windGust}
                 windDirection={weatherData.windDirection}
                 windDirectionCardinal={weatherData.windDirectionCardinal}
               />

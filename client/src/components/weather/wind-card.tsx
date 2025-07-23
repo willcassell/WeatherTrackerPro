@@ -2,12 +2,14 @@ import { Wind } from "lucide-react";
 
 interface WindCardProps {
   windSpeed?: number;
+  windGust?: number;
   windDirection?: number;
   windDirectionCardinal?: string;
 }
 
 export default function WindCard({ 
   windSpeed, 
+  windGust,
   windDirection, 
   windDirectionCardinal 
 }: WindCardProps) {
@@ -26,7 +28,7 @@ export default function WindCard({
         <Wind className="weather-card-icon h-4 w-4" />
       </div>
       <div className="flex items-center space-x-4">
-        {/* Compact Compass Rose */}
+        {/* Left Side - Compass Rose */}
         <div className="relative w-12 h-12 flex-shrink-0">
           <div className="absolute inset-0 border-2 border-border rounded-full"></div>
           {/* Cardinal directions */}
@@ -53,12 +55,25 @@ export default function WindCard({
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[3px] border-r-[3px] border-b-[6px] border-transparent border-b-primary"></div>
           </div>
         </div>
+        
+        {/* Center - Wind Speed */}
         <div className="flex-1">
-          <div className="text-xl font-bold text-foreground">
+          <div className="text-lg font-bold text-foreground">
             {formatWindSpeed(windSpeed)} mph
           </div>
           <div className="text-xs text-muted-foreground">
             {windDirectionCardinal || "N"} ({formatDirection(windDirection)})
+          </div>
+        </div>
+        
+        {/* Right Side - Wind Gust Data */}
+        <div className="text-right">
+          <div className="text-sm font-bold text-orange-400">
+            {formatWindSpeed(windGust)} mph
+          </div>
+          <div className="text-xs text-muted-foreground">Gusts</div>
+          <div className="text-xs text-muted-foreground mt-0.5">
+            {windGust && windSpeed ? `+${(windGust - windSpeed).toFixed(1)}` : '--'}
           </div>
         </div>
       </div>

@@ -82,6 +82,7 @@ async function fetchWeatherFlowData(): Promise<any> {
       temperatureHigh: celsiusToFahrenheit(todayForecast?.air_temp_high || currentConditions.air_temperature),
       temperatureLow: celsiusToFahrenheit(todayForecast?.air_temp_low || currentConditions.air_temperature),
       windSpeed: currentConditions.wind_avg * 2.237, // Convert m/s to mph
+      windGust: currentConditions.wind_gust * 2.237, // Convert m/s to mph
       windDirection: currentConditions.wind_direction,
       windDirectionCardinal: degreesToCardinal(currentConditions.wind_direction),
       pressure: millibarsToInchesHg(currentConditions.sea_level_pressure),

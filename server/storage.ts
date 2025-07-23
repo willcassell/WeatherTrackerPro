@@ -33,6 +33,7 @@ export class MemStorage implements IStorage {
       temperatureHigh: insertData.temperatureHigh ?? null,
       temperatureLow: insertData.temperatureLow ?? null,
       windSpeed: insertData.windSpeed ?? null,
+      windGust: insertData.windGust ?? null,
       windDirection: insertData.windDirection ?? null,
       windDirectionCardinal: insertData.windDirectionCardinal ?? null,
       pressure: insertData.pressure ?? null,

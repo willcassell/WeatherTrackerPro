@@ -10,6 +10,7 @@ export const weatherData = pgTable("weather_data", {
   temperatureHigh: real("temperature_high"), // Daily high temperature
   temperatureLow: real("temperature_low"), // Daily low temperature
   windSpeed: real("wind_speed"), // Wind speed in mph
+  windGust: real("wind_gust"), // Wind gust in mph
   windDirection: integer("wind_direction"), // Wind direction in degrees (0-360)
   windDirectionCardinal: text("wind_direction_cardinal"), // Wind direction as cardinal (N, NE, E, etc.)
   pressure: real("pressure"), // Barometric pressure in inHg
