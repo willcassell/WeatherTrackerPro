@@ -7,16 +7,25 @@ import WindCard from "@/components/weather/wind-card";
 import PressureCard from "@/components/weather/pressure-card";
 import RainfallCard from "@/components/weather/rainfall-card";
 import AdditionalDataCard from "@/components/weather/additional-data-card";
+import ThermostatCard from "@/components/weather/thermostat-card";
 import RadarDisplay from "@/components/weather/radar-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
-import type { WeatherData } from "@shared/schema";
+import type { WeatherData, ThermostatData } from "@shared/schema";
 
 const REFRESH_INTERVAL = 3 * 60 * 1000; // 3 minutes
 
 export default function WeatherDashboard() {
   const { data: weatherData, isLoading, error, isError } = useQuery<WeatherData>({
     queryKey: ['/api/weather/current'],
+    refetchInterval: REFRESH_INTERVAL,
+    refetchOnWindowFocus: true,
+    retry: 3,
+    retryDelay: 5000,
+  });
+
+  const { data: thermostatData, isLoading: thermostatLoading, error: thermostatError } = useQuery<ThermostatData[]>({
+    queryKey: ['/api/thermostats/current'],
     refetchInterval: REFRESH_INTERVAL,
     refetchOnWindowFocus: true,
     retry: 3,
@@ -106,6 +115,11 @@ export default function WeatherDashboard() {
                 uvIndex={weatherData.uvIndex}
                 visibility={weatherData.visibility}
                 dewPoint={weatherData.dewPoint}
+              />
+              <ThermostatCard 
+                thermostats={thermostatData}
+                isLoading={thermostatLoading}
+                error={thermostatError instanceof Error ? thermostatError.message : undefined}
               />
             </>
           ) : (

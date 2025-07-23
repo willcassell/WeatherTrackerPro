@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWeatherDataSchema, type WeatherFlowStation, type WeatherFlowObservation, type WeatherFlowForecast } from "@shared/schema";
+import { insertWeatherDataSchema, insertThermostatDataSchema, type WeatherFlowStation, type WeatherFlowObservation, type WeatherFlowForecast, type ThermostatData } from "@shared/schema";
 import { z } from "zod";
 
 const WEATHERFLOW_API_BASE = "https://swd.weatherflow.com/swd/rest";
@@ -181,6 +181,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Error getting weather history:", error);
       res.status(500).json({ 
         error: "Failed to fetch weather history",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  // Thermostat API endpoints
+  app.get("/api/thermostats/current", async (req, res) => {
+    try {
+      // Return mock data for now - will be replaced with real integration
+      const mockThermostats: ThermostatData[] = [
+        {
+          id: 1,
+          thermostatId: "ecobee-living-room",
+          name: "Living Room",
+          temperature: 72.5,
+          targetTemp: 72.0,
+          humidity: 45,
+          mode: "cool",
+          timestamp: new Date(),
+          lastUpdated: new Date(),
+        },
+        {
+          id: 2,
+          thermostatId: "ecobee-bedroom",
+          name: "Bedroom",
+          temperature: 70.8,
+          targetTemp: 69.0,
+          humidity: 42,
+          mode: "cool",
+          timestamp: new Date(),
+          lastUpdated: new Date(),
+        }
+      ];
+
+      res.json(mockThermostats);
+    } catch (error) {
+      console.error("Error getting thermostat data:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch thermostat data",
         message: error instanceof Error ? error.message : "Unknown error"
       });
     }

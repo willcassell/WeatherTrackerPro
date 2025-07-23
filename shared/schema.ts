@@ -35,6 +35,28 @@ export const insertWeatherDataSchema = createInsertSchema(weatherData).omit({
 export type InsertWeatherData = z.infer<typeof insertWeatherDataSchema>;
 export type WeatherData = typeof weatherData.$inferSelect;
 
+// Thermostat data schema
+export const thermostatData = pgTable("thermostat_data", {
+  id: serial("id").primaryKey(),
+  thermostatId: text("thermostat_id").notNull(),
+  name: text("name").notNull(), // Display name/location
+  temperature: real("temperature").notNull(), // Current temperature in Fahrenheit
+  targetTemp: real("target_temp").notNull(), // Target temperature in Fahrenheit
+  humidity: real("humidity"), // Humidity percentage (optional)
+  mode: text("mode").notNull(), // heat, cool, auto, off
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+});
+
+export const insertThermostatDataSchema = createInsertSchema(thermostatData).omit({
+  id: true,
+  timestamp: true,
+  lastUpdated: true,
+});
+
+export type InsertThermostatData = z.infer<typeof insertThermostatDataSchema>;
+export type ThermostatData = typeof thermostatData.$inferSelect;
+
 // WeatherFlow API response types
 export interface WeatherFlowStation {
   station_id: number;
@@ -91,7 +113,6 @@ export interface WeatherFlowForecast {
     solar_radiation: number;
     uv: number;
     brightness: number;
-    feels_like: number;
     dew_point: number;
     wet_bulb_globe_temperature: number;
     delta_t: number;

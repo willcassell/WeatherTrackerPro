@@ -123,3 +123,10 @@ Preferred communication style: Simple, everyday language.
 - **Compact Weather Cards**: Reduced padding and spacing for better space utilization on kiosk displays
 - **Visual Enhancements**: Added compass rose for wind direction and pressure gauge with high/medium/low indicators
 - **Layout Improvements**: Implemented 50/50 split with weather cards on left, live radar on right half
+
+### Thermostat Integration (July 23, 2025)
+- **Indoor Temperature Card**: Added thermostat card displaying data from 2 Ecobee thermostats (Living Room & Bedroom)
+- **Temperature Comparison**: Shows current vs target temperature with visual indicators
+- **HVAC Mode Display**: Color-coded heating/cooling modes with emoji indicators
+- **API Framework**: Built extensible API structure ready for real Ecobee authentication
+- **Mock Data Implementation**: Currently using sample data while API keys are configured
