@@ -42,6 +42,7 @@ export class MemStorage implements IStorage {
       humidity: insertData.humidity ?? null,
       uvIndex: insertData.uvIndex ?? null,
       visibility: insertData.visibility ?? null,
+      dewPoint: insertData.dewPoint ?? null,
       rainToday: insertData.rainToday ?? null,
       rainYesterday: insertData.rainYesterday ?? null,
     };

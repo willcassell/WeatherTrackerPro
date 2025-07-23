@@ -91,6 +91,7 @@ async function fetchWeatherFlowData(): Promise<any> {
       humidity: currentConditions.relative_humidity,
       uvIndex: currentConditions.uv,
       visibility: 10.0, // WeatherFlow doesn't provide visibility, using default
+      dewPoint: celsiusToFahrenheit(currentConditions.dew_point),
       rainToday: 0.0, // Would need additional API call for precipitation data
       rainYesterday: 0.0, // Would need historical precipitation data
     };

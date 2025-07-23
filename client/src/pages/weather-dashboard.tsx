@@ -104,6 +104,7 @@ export default function WeatherDashboard() {
                 humidity={weatherData.humidity}
                 uvIndex={weatherData.uvIndex}
                 visibility={weatherData.visibility}
+                dewPoint={weatherData.dewPoint}
               />
             </>
           ) : (

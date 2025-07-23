@@ -19,6 +19,7 @@ export const weatherData = pgTable("weather_data", {
   humidity: real("humidity"), // Humidity percentage
   uvIndex: real("uv_index"), // UV index
   visibility: real("visibility"), // Visibility in miles
+  dewPoint: real("dew_point"), // Dew point temperature in Fahrenheit
   rainToday: real("rain_today"), // Rain accumulation today in inches
   rainYesterday: real("rain_yesterday"), // Rain accumulation yesterday in inches
   lastUpdated: timestamp("last_updated").defaultNow().notNull(),
