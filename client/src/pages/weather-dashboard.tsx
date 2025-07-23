@@ -82,6 +82,7 @@ export default function WeatherDashboard() {
             <>
               <TemperatureCard 
                 currentTemp={weatherData.temperature}
+                feelsLike={weatherData.feelsLike}
                 highTemp={weatherData.temperatureHigh}
                 lowTemp={weatherData.temperatureLow}
               />

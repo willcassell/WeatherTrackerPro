@@ -79,6 +79,7 @@ async function fetchWeatherFlowData(): Promise<any> {
     const weatherData = {
       stationId: STATION_ID,
       temperature: celsiusToFahrenheit(currentConditions.air_temperature),
+      feelsLike: celsiusToFahrenheit(currentConditions.feels_like),
       temperatureHigh: celsiusToFahrenheit(todayForecast?.air_temp_high || currentConditions.air_temperature),
       temperatureLow: celsiusToFahrenheit(todayForecast?.air_temp_low || currentConditions.air_temperature),
       windSpeed: currentConditions.wind_avg * 2.237, // Convert m/s to mph

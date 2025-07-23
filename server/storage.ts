@@ -30,6 +30,7 @@ export class MemStorage implements IStorage {
       lastUpdated: new Date(),
       // Ensure all optional fields have proper null values instead of undefined
       temperature: insertData.temperature ?? null,
+      feelsLike: insertData.feelsLike ?? null,
       temperatureHigh: insertData.temperatureHigh ?? null,
       temperatureLow: insertData.temperatureLow ?? null,
       windSpeed: insertData.windSpeed ?? null,

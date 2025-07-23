@@ -7,6 +7,7 @@ export const weatherData = pgTable("weather_data", {
   stationId: text("station_id").notNull(),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   temperature: real("temperature"), // Current temperature in Fahrenheit
+  feelsLike: real("feels_like"), // Feels-like temperature in Fahrenheit
   temperatureHigh: real("temperature_high"), // Daily high temperature
   temperatureLow: real("temperature_low"), // Daily low temperature
   windSpeed: real("wind_speed"), // Wind speed in mph
@@ -77,6 +78,7 @@ export interface WeatherFlowForecast {
     conditions: string;
     icon: string;
     air_temperature: number;
+    feels_like: number;
     sea_level_pressure: number;
     station_pressure: number;
     pressure_trend: string;
